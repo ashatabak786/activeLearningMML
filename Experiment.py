@@ -112,7 +112,8 @@ if __name__ == "__main__":
     plt.show()
 
     maes = []
-    agent.make_static()
+    # agent.make_static()
+    env.reset(from_snapshot=True)
     env.begin_valid()
     observation = env.get_observed_state()
     for extra_label_c in range(200):

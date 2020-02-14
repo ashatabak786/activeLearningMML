@@ -25,7 +25,6 @@ class SimpleAgent(BaseAgent):
 
         self.static_policy = static_policy
 
-        # define the environment - TODO: make active env
         self.num_feats = env.get_observed_state().shape
         self.num_actions = len(env.action_space)
         self.env = env
@@ -110,6 +109,7 @@ class SimpleAgent(BaseAgent):
             expected_q_values = batch_reward + self.gamma * max_next_q_values
 
         diff = (expected_q_values - current_q_values)
+        #todo: bring to cpu?
         loss = self.MSE(diff)
         loss = loss.mean()
 
