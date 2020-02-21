@@ -1,8 +1,8 @@
 import torch
 import torch.optim as optim
-from activeLearner.BaseRLAgent import BaseAgent
+from ALBatch.activeLearner.BaseRLAgent import BaseAgent
 import numpy as np
-from activeLearner.DQNModel import ExperienceReplayMemory, DQN
+from ALBatch.activeLearner.DQNModel import ExperienceReplayMemory, DQN
 seed = 123
 np.random.seed(seed)
 torch.manual_seed(seed)
@@ -25,7 +25,7 @@ class SimpleAgent(BaseAgent):
 
         self.static_policy = static_policy
 
-        self.num_feats = env.get_observed_state().shape
+        self.num_feats = env.get_observed_state().shape[1]
         self.num_actions = len(env.action_space)
         self.env = env
 
@@ -75,7 +75,7 @@ class SimpleAgent(BaseAgent):
         #       batch_state.shape, batch_action.shape,
         #       batch_reward.shape, batch_next_state.shape)
 
-        shape = (-1,) + self.num_feats
+        shape = (-1, self.num_feats)
 
         batch_state = torch.tensor(batch_state, device=self.device, dtype=torch.float).view(shape)
         batch_action = torch.tensor(batch_action, device=self.device, dtype=torch.long).squeeze().view(-1, 1)
@@ -143,12 +143,13 @@ class SimpleAgent(BaseAgent):
         # epsilon greedy action selection
         with torch.no_grad():
             if np.random.random() >= eps :
-                X = torch.tensor([s], device=self.device, dtype=torch.float)
-                a = self.model(X).max(1)[1].view(1, 1)
+                X = torch.tensor(s, device=self.device, dtype=torch.float)
+                a = self.model(X).max(1)[1]#.view(1, 1)
                 # state -> action!
-                return a.item()
+                return a
             else:
-                return np.random.randint(0, self.num_actions)
+                return np.random.randint(0, self.num_actions, size = len(s))
+                    #np.random.randint(0, self.num_actions)
 
     def update_target_model(self):
         self.update_count += 1

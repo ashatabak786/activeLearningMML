@@ -1,10 +1,10 @@
-from activeLearner.ActiveLearnerRL import SimpleAgent
-from utils.RLhyperparams import Config
-from baseLearners.DataLoaders import  load_saved_data
-from baseLearners.MosiEarlyFusionLSTM import EFLSTM
+from ALSingle.activeLearner.ActiveLearnerRL import SimpleAgent
+from ALSingle.utils.RLhyperparams import Config
+from ALSingle.baseLearners.DataLoaders import  load_saved_data
+from ALSingle.baseLearners.MosiEarlyFusionLSTM import EFLSTM
 import torch
 import math
-from activeLearner.activeLearningEnv import ActiveEnvSingleState
+from ALSingle.activeLearner.activeLearningEnv import ActiveEnvSingleState
 import matplotlib.pyplot as plt
 
 def get_config():
